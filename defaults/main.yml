@@ -1,0 +1,3 @@
+---
+# Install Kannel Extra packages
+kannel_install_extras: true

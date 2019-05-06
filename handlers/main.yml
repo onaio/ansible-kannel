@@ -1,0 +1,5 @@
+---
+- name: restart kannel
+  service:
+    name: kannel
+    state: restarted
