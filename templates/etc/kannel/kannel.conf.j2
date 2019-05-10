@@ -1,0 +1,9 @@
+{% for group in kannel_groups %}
+{% for key, value in group.iteritems() %}
+{{ key }} = {{ value }}
+{% endfor %}
+
+{% endfor %}
+{% for file in kannel_include_config_files %}
+include = {{ file.dest }}
+{% endfor %}

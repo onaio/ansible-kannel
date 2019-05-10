@@ -1,3 +1,29 @@
 ---
 # Install Kannel Extra packages
 kannel_install_extras: true
+kannel_enable_wap_box: false
+kannel_enable_sms_box: true
+
+kannel_groups:
+  - group: core
+    admin-port: 13000
+    smsbox-port: 13001
+    admin-password: bar
+    admin-deny-ip: "*.*.*.*"
+    admin-allow-ip: "127.0.0.1"
+    log-file: "/var/log/kannel/bearerbox.log"
+    access-log: "/var/log/kannel/bearerbox-access.log"
+    box-deny-ip: "*.*.*.*"
+    box-allow-ip: "127.0.0.1"
+
+  - group: smsbox
+    bearerbox-host: 127.0.0.1
+    sendsms-port: 13013
+    log-file: /var/log/kannel/smsbox.log
+    access-log: /var/log/kannel/smsbox-access.log
+    log-level: 0
+    smsbox-id: mysmc
+
+kannel_include_config_files:
+  - src: templates/etc/kannel/fake-smsc.conf.j2
+    dest: /etc/kannel/fake-smsc.conf
