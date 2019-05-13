@@ -24,6 +24,4 @@ kannel_groups:
     log-level: 0
     smsbox-id: mysmc
 
-kannel_include_config_files:
-  - src: templates/etc/kannel/fake-smsc.conf.j2
-    dest: /etc/kannel/fake-smsc.conf
+kannel_include_config_files: []
