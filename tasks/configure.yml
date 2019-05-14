@@ -3,11 +3,15 @@
   template:
     src: "templates/etc/default/kannel.j2"
     dest: "/etc/default/kannel"
+  notify:
+    - Restart Kannel
 
 - name: Kannel configurations
   template:
     src: "templates/etc/kannel/kannel.conf.j2"
     dest: "/etc/kannel/kannel.conf"
+  notify:
+    - Restart Kannel
 
 - name: Import extra config files
   template:
@@ -15,3 +19,5 @@
     dest: "{{ item.dest }}"
   with_items: '{{kannel_include_config_files}}'
   when: kannel_include_config_files | length > 0
+  notify:
+    - Restart Kannel
