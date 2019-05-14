@@ -30,7 +30,7 @@ Example Playbook
 License
 -------
 
-MIT
+Apache V2
 
 Author Information
 ------------------
