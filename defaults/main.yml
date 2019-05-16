@@ -22,10 +22,10 @@ kannel_groups:
     log-file: /var/log/kannel/smsbox.log
     access-log: /var/log/kannel/smsbox-access.log
     log-level: 0
-    smsbox-id: mysmc
+    smsbox-id: mysmsbox
 
   - group: smsbox-route                                                                                                                    │"
-    smsbox-id: mysmc                                                                                                                       │concatenation = true
-    smsc-id = "MYSMSC"
+    smsbox-id: mysmsbox                                                                                                                       │concatenation = true
+    smsc-id: "MY-SMSC"
 
 kannel_include_config_files: []
