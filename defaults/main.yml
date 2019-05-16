@@ -24,4 +24,8 @@ kannel_groups:
     log-level: 0
     smsbox-id: mysmc
 
+  - group: smsbox-route                                                                                                                    │"
+    smsbox-id: mysmc                                                                                                                       │concatenation = true
+    smsc-id = "MYSMSC"
+
 kannel_include_config_files: []
