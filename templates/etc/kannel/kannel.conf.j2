@@ -1,5 +1,5 @@
 {% for group in kannel_groups %}
-{% for key, value in group.iteritems() %}
+{% for key, value in group.items() %}
 {{ key }} = {{ value }}
 {% endfor %}
 
