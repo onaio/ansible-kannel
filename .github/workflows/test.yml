@@ -1,0 +1,14 @@
+---
+name: Molecule Test
+on:
+  - push
+  - pull_request
+
+jobs:
+  molecule:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: "${{ github.repository }}"
+      - uses: gofrolist/molecule-action@master
