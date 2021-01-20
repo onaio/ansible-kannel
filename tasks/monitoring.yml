@@ -1,0 +1,25 @@
+---
+- name: Copy monit monitor
+  template:
+    src: "templates/etc/monit/conf.d/smpp-host-connection.j2"
+    dest: "/etc/monit/conf.d/smpp-host-connection"
+    mode: 0644
+  notify:
+    -  Reload Monit
+
+- name: Make sure monit exec-scripts directory exists
+  file:
+    path: "/etc/monit/exec-sripts/"
+    state: directory
+
+- name: Copy monit connection alert script
+  template:
+    src: "templates/etc/monit/exec-scripts/smpp-connection-alerts.sh.j2"
+    dest: "/etc/monit/exec-sripts/smpp-connection-alerts.sh"
+    mode: 0755
+
+- name: Copy Opsgenie alert script
+  template:
+    src: "templates/etc/monit/exec-scripts/smpp-connection-opsgenie-alerts.sh.j2"
+    dest: "/etc/monit/exec-sripts/smpp-connection-opsgenie-alerts.sh"
+    mode: 0755

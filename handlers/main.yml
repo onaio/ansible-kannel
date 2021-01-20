@@ -3,3 +3,8 @@
   service:
     name: kannel
     state: restarted
+
+- name: Reload Monit
+  service:
+    name: monit
+    state: reloaded
