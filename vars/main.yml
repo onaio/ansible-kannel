@@ -1,2 +1,5 @@
 ---
 # vars file for kannel
+kannel_monit_exec_scripts_path: "/etc/monit/exec-scripts"
+kannel_monit_exec_script_name: "smpp-connection-alerts.sh"
+kannel_monit_opsgenie_exec_script_name: "smpp-connection-opsgenie-alerts.sh"

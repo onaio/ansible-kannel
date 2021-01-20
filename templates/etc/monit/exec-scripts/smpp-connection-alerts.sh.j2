@@ -7,7 +7,7 @@ if [[ "$1" == "failed" ]] ; then
     echo "$MONIT_DATE" > "$ipsec_failure_file"
     # Send first incident occurrence alert
     # Create Opsgenie Incident and save request ID to file
-    source /etc/monit/exec-scripts/opsgenie-alert
+    source "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_opsgenie_exec_script_name }}"
     # Send email to stakeholders
     curl -s --user "{{ kannel_monit_mailgun_api_key }}" \
         https://api.mailgun.net/v3/{{ kannel_monit_mailgun_domain }}/messages \
@@ -15,8 +15,6 @@ if [[ "$1" == "failed" ]] ; then
         -F to="{{ kannel_monit_mailgun_recipient }}" \
         -F subject="$(hostname): {{ kannel_monit_check_host_name }} SMPP Connection" \
         -F text="The {{ kannel_monit_check_host_name }} SMPP connection in the host $(hostname) has been lost from around '$MONIT_DATE UTC'!"
-
-    /etc/monit/exec-scripts/slack-notification
 
     exit 0
 
@@ -29,7 +27,7 @@ elif [[ "$1" == "success" ]] ; then
     time_difference=$(expr ${current_time_epoch} - ${first_incident_time_epoch})
     incident_duration=$(date '+%H hours, %M minutes and %S seconds' -ud @${time_difference})
     # Close Opsgenie incident
-    source /etc/monit/exec-scripts/opsgenie-alert
+    source "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_opsgenie_exec_script_name }}"
 
     # Send resolution alert to stakeholders
     curl -s --user "{{ kannel_monit_mailgun_api_key }}" \
@@ -41,8 +39,6 @@ elif [[ "$1" == "success" ]] ; then
 
     # Clear failure incident file content
     :> "$ipsec_failure_file"
-
-    /etc/monit/exec-scripts/slack-notification
 
     exit 0
 else

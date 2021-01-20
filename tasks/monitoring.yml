@@ -9,17 +9,17 @@
 
 - name: Make sure monit exec-scripts directory exists
   file:
-    path: "/etc/monit/exec-sripts/"
+    path: "{{ kannel_monit_exec_scripts_path }}"
     state: directory
 
 - name: Copy monit connection alert script
   template:
     src: "templates/etc/monit/exec-scripts/smpp-connection-alerts.sh.j2"
-    dest: "/etc/monit/exec-sripts/smpp-connection-alerts.sh"
+    dest: "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_exec_script_name }}"
     mode: 0755
 
 - name: Copy Opsgenie alert script
   template:
     src: "templates/etc/monit/exec-scripts/smpp-connection-opsgenie-alerts.sh.j2"
-    dest: "/etc/monit/exec-sripts/smpp-connection-opsgenie-alerts.sh"
+    dest: "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_opsgenie_exec_script_name }}"
     mode: 0755
