@@ -5,12 +5,13 @@
     dest: "/etc/monit/conf.d/smpp-host-connection"
     mode: 0644
   notify:
-    -  Reload Monit
+    - Reload Monit
 
 - name: Make sure monit exec-scripts directory exists
   file:
     path: "{{ kannel_monit_exec_scripts_path }}"
     state: directory
+    mode: 0644
 
 - name: Copy monit connection alert script
   template:

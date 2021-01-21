@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    kannel_monit_setup_mode: true
+    kannel_monit_opsgenie_api_key: "foo"
+    kannel_slack_monit_endpoint: "foo"
+    kannel_monit_check_host_address: 8.8.8.8
+    kannel_monit_check_host_port: 53
+  roles:
+    - role: ansible-kannel

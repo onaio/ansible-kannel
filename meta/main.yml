@@ -4,6 +4,7 @@ galaxy_info:
   description: Installs and configures Kannel
   company: Ona Systems Inc
   license: Apache V2
+  role_name: kannel
 
   min_ansible_version: 1.2
 
@@ -17,4 +18,11 @@ galaxy_info:
     - kannel
     - smpp
 
-dependencies: []
+dependencies:
+  - role: onaio.monit
+    vars:
+      monit_setup_mode: "{{ kannel_monit_setup_mode }}"
+      monit_scripts: "{{ kannel_monit_scripts }}"
+      monit_opsgenie_api_key: "{{ kannel_monit_opsgenie_api_key }}"
+      slack_monit_endpoint: "{{ kannel_slack_monit_endpoint }}"
+    when: kannel_enable_monit

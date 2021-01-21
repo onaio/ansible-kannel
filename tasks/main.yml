@@ -3,4 +3,4 @@
 - include: configure.yml
 - include: monitoring.yml
   tags:
-    - monitoring
+      - monitoring
