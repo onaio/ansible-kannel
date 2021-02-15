@@ -1,0 +1,43 @@
+#!/bin/bash
+opsgenie_request_id_file=/tmp/ipsec-opsgenie-request-id
+if [[ "$1" == "failed" ]]; then
+# Send first incident occurrence alert
+# Create Opsgenie alert and save request ID to file
+   opsgenie_request_id=$(curl -s -X POST https://api.opsgenie.com/v2/alerts \
+        -H "Content-Type: application/json" \
+        -H "Authorization: GenieKey {{ kannel_monit_opsgenie_api_key }}" \
+        -d \
+        "{
+        \"message\": \"$(hostname): monit - ${MONIT_SERVICE}\",
+        \"alias\": \"monit-$(hostname)-${MONIT_SERVICE}\",
+        \"description\":\"${MONIT_DESCRIPTION}\",
+        \"priority\":\"P4\",
+        \"source\":\"$(hostname)\"
+    }" |
+            python3 -c "import sys, json; print(json.load(sys.stdin)['requestId'])")
+   echo "$opsgenie_request_id" > "$opsgenie_request_id_file"
+    exit 0
+
+elif [[ "$1" == "success" ]]; then
+    # Close Opsgenie alert
+ read current_opsgenie_open_request_id <"$opsgenie_request_id_file"
+ if [[ -n "$current_opsgenie_open_request_id" ]]; then
+        opsgenie_alert_identifier=$(curl -s -X GET "https://api.opsgenie.com/v2/alerts/requests/$current_opsgenie_open_request_id" \
+            -H 'Authorization: GenieKey {{ kannel_monit_opsgenie_api_key }}' |
+            python3 -c "import sys, json; print(json.load(sys.stdin)['data']['alertId'])")
+        curl -X POST "https://api.opsgenie.com/v2/alerts/$opsgenie_alert_identifier/close?identifierType=id" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: GenieKey {{ kannel_monit_opsgenie_api_key }}" \
+            -d \
+            "{
+            \"user\":\"Monitoring Script\",
+            \"source\":\"$(hostname)\",
+            \"note\":\"Connection restored at $MONIT_DATE after $incident_duration\"
+        }"
+        :> "$opsgenie_request_id_file"
+  fi
+        return 0
+else
+        exit 1
+fi
+exit 1

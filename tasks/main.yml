@@ -1,3 +1,6 @@
 ---
 - include: install.yml
 - include: configure.yml
+- include: monitoring.yml
+  tags:
+      - monitoring

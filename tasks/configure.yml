@@ -3,6 +3,7 @@
   template:
     src: "templates/etc/default/kannel.j2"
     dest: "/etc/default/kannel"
+    mode: 0644
   notify:
     - Restart Kannel
 
@@ -10,6 +11,7 @@
   template:
     src: "templates/etc/kannel/kannel.conf.j2"
     dest: "/etc/kannel/kannel.conf"
+    mode: 0644
   notify:
     - Restart Kannel
 
@@ -17,6 +19,7 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    mode: 0644
   with_items: '{{ kannel_include_config_files }}'
   when: kannel_include_config_files | length > 0
   notify:

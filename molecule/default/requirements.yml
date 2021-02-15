@@ -1,0 +1,4 @@
+---
+- src: https://github.com/onaio/ansible-monit.git
+  name: onaio.monit
+  scm: git

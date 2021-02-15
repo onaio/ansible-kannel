@@ -1,0 +1,47 @@
+#!/bin/bash
+
+ipsec_failure_file=/tmp/ipsec-failure-time
+# If failed
+if [[ "$1" == "failed" ]] ; then
+    # write the first failure incident to file
+    echo "$MONIT_DATE" > "$ipsec_failure_file"
+    # Send first incident occurrence alert
+    # Create Opsgenie Incident and save request ID to file
+    source "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_opsgenie_exec_script_name }}"
+    # Send email to stakeholders
+    curl -s --user "{{ kannel_monit_mailgun_api_key }}" \
+        https://api.mailgun.net/v3/{{ kannel_monit_mailgun_domain }}/messages \
+        -F from="{{ kannel_monit_mailgun_from_address }}" \
+        -F to="{{ kannel_monit_mailgun_recipient }}" \
+        -F subject="$(hostname): {{ kannel_monit_check_host_name }} SMPP Connection" \
+        -F text="The {{ kannel_monit_check_host_name }} SMPP connection in the host $(hostname) has been lost from around '$MONIT_DATE UTC'!"
+
+    exit 0
+
+elif [[ "$1" == "success" ]] ; then
+    # Get first incident occurence and compute time difference
+    read first_incident_time <"$ipsec_failure_file"
+
+    first_incident_time_epoch=$(date +%s -d "${first_incident_time}")
+    current_time_epoch=$(date +%s -d "${MONIT_DATE}")
+    time_difference=$(expr ${current_time_epoch} - ${first_incident_time_epoch})
+    incident_duration=$(date '+%H hours, %M minutes and %S seconds' -ud @${time_difference})
+    # Close Opsgenie incident
+    source "{{ kannel_monit_exec_scripts_path }}/{{ kannel_monit_opsgenie_exec_script_name }}"
+
+    # Send resolution alert to stakeholders
+    curl -s --user "{{ kannel_monit_mailgun_api_key }}" \
+        https://api.mailgun.net/v3/{{ kannel_monit_mailgun_domain }}/messages \
+        -F from="{{ kannel_monit_mailgun_from_address }}" \
+        -F to="{{ kannel_monit_mailgun_recipient }}" \
+        -F subject="$(hostname): {{ kannel_monit_check_host_name }} SMPP Connection" \
+        -F text="The {{ kannel_monit_check_host_name }} SMPP connection on the host $(hostname) has been restored at '$MONIT_DATE UTC'. The connection was down or intermittent for up to $incident_duration."
+
+    # Clear failure incident file content
+    :> "$ipsec_failure_file"
+
+    exit 0
+else
+    exit 1
+fi
+exit 1
