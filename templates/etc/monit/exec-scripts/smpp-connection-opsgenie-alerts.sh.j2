@@ -11,7 +11,7 @@ if [[ "$1" == "failed" ]]; then
         \"message\": \"$(hostname): monit - ${MONIT_SERVICE}\",
         \"alias\": \"monit-$(hostname)-${MONIT_SERVICE}\",
         \"description\":\"${MONIT_DESCRIPTION}\",
-        \"priority\":\"P4\",
+        \"priority\":\"{{ kannel_monit_opsgenie_alert_priority }}\",
         \"source\":\"$(hostname)\"
     }" |
             python3 -c "import sys, json; print(json.load(sys.stdin)['requestId'])")
