@@ -41,6 +41,7 @@ kannel_monit_mailgun_domain:
 kannel_monit_mailgun_from_address:
 kannel_monit_mailgun_recipient:
 kannel_monit_opsgenie_api_key:
+kannel_monit_opsgenie_alert_priority: P3  # Check priority levels https://docs.opsgenie.com/docs/alert-priority-settings
 kannel_monit_setup_mode: false
 kannel_enable_monit: true
 kannel_monit_scripts: ["monit"]
