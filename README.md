@@ -8,6 +8,11 @@ Requirements
 
 The role has been developed and tested on Debian/Ubuntu 18.0.4
 
+The controller requires Ansible 2.10 or newer. Task imports, monitoring tags,
+handlers and template rendering were checked locally with ansible-core 2.20.
+Package and service actions were mocked. These checks do not validate a
+running Kannel installation on a new Ubuntu release.
+
 Role Variables
 --------------
 These are the role variables and default values
@@ -63,7 +68,10 @@ kannel_include_config_files:
 Dependencies
 ------------
 
-None.
+`onaio.monit` must be available on the controller. Set `kannel_enable_monit`
+to false to skip both its tasks and Kannel's monitoring configuration. The
+`monitoring` tag selects Kannel's monitoring tasks on an already configured
+host.
 
 Example Playbook
 ----------------

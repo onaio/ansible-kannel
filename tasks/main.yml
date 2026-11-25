@@ -1,6 +1,7 @@
 ---
-- include: install.yml
-- include: configure.yml
-- include: monitoring.yml
+- ansible.builtin.import_tasks: install.yml
+- ansible.builtin.import_tasks: configure.yml
+- ansible.builtin.import_tasks: monitoring.yml
+  when: kannel_enable_monit
   tags:
       - monitoring
