@@ -11,7 +11,7 @@
   file:
     path: "{{ kannel_monit_exec_scripts_path }}"
     state: directory
-    mode: 0644
+    mode: '0755'
 
 - name: Copy monit connection alert script
   template:
